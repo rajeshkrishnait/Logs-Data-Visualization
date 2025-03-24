@@ -9,26 +9,43 @@ const generateLogEntry = (id: number): LogEntry => {
 
 const LogStream: React.FC = () => {
   const [logs, setLogs] = useState<LogEntry[]>([]);
+  const [isStreaming, setIsStreaming] = useState(true);
 
   useEffect(() => {
     let id = 1;
     const interval = setInterval(() => {
-      setLogs(prevLogs => {
-        const newLog = generateLogEntry(id++);
-        return [newLog, ...prevLogs].slice(0, 100); // Keep only the latest 100 logs
-      });
+      if (isStreaming) {
+        setLogs(prevLogs => {
+          const newLog = generateLogEntry(id++);
+          return [newLog, ...prevLogs].slice(0, 100); // Keep only the latest 100 logs
+        });
+      }
     }, 1000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [isStreaming]);
+
+  const handleClearLogs = () => {
+    setLogs([]);
+  };
+
+  const toggleStreaming = () => {
+    setIsStreaming(prev => !prev);
+  };
 
   return (
+    <div>
     <div className='stream'>
       {logs.map(log => (
         <div key={log.id}>
           [{log.timestamp}] [{log.logLevel}] [{log.serviceName}] [{log.statusCode}] [{log.responseTime}ms] {log.message}
         </div>
       ))}
+    </div>
+    <div className="stream-controls">
+        <button onClick={handleClearLogs}>Clear Stream</button>
+        <button onClick={toggleStreaming}>{isStreaming ? 'Pause' : 'Resume'} Stream</button>
+      </div>
     </div>
   );
 };

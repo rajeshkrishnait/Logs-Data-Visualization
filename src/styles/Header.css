@@ -1,14 +1,17 @@
 .header {
     display: flex;
     align-items: center;
+    flex-direction: column;
     padding: 16px;
     background-color: white;
     color: black;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 100%;
+    width: 10%;
+    height: 100vh;
     z-index: 50;
-    justify-content: center;
+    justify-content: start;
     gap: 10px;
+    box-sizing: border-box;
   }
   
 .header img{
@@ -21,3 +24,9 @@
     font-weight:600;
 }
   
+.bottomAlign{
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
