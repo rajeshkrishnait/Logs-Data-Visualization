@@ -45,7 +45,7 @@ const TabbedChart: React.FC = () => {
   const [value, setValue] = useState(0);
   const data: LogEntry[] = generateDummyData();
 
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleChange = (_: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
 
@@ -119,6 +119,7 @@ const TabbedChart: React.FC = () => {
               ))}
             </Pie>
             <Tooltip />
+            <Legend />
           </PieChart>
         </ResponsiveContainer>
       </TabPanel>
@@ -151,6 +152,7 @@ const TabbedChart: React.FC = () => {
             <PolarAngleAxis dataKey="name" />
             <PolarRadiusAxis />
             <Radar name="Logs" dataKey="count" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
+            <Legend />
           </RadarChart>
         </ResponsiveContainer>
       </TabPanel>

@@ -35,6 +35,7 @@ const LogStream: React.FC = () => {
 
   return (
     <div>
+      <h2>Websocket stream simulator</h2>
     <div className='stream'>
       {logs.map(log => (
         <div key={log.id}>

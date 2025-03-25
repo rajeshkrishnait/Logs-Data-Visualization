@@ -1,0 +1,52 @@
+.home-container {
+    max-width: 800px;
+    margin: auto;
+    text-align: center;
+    padding: 40px;
+  }
+  
+  .typing-text {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #1976d2;
+    border-right: 2px solid #1976d2;
+    white-space: nowrap;
+    overflow: hidden;
+    display: inline-block;
+    animation: blinkCursor 0.8s infinite;
+  }
+  
+  @keyframes blinkCursor {
+    50% {
+      border-color: transparent;
+    }
+  }
+  
+  .description {
+    font-size: 1.2rem;
+    color: var(--text-color);
+    margin-top: 20px;
+  }
+  
+  .features-list {
+    list-style: none;
+    padding: 0;
+    text-align: left;
+    margin-top: 20px;
+  }
+  
+  .features-list li {
+    font-size: 1.1rem;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .features-list li::before {
+    content: "✔️";
+    margin-right: 10px;
+    color: green;
+  }
+  
