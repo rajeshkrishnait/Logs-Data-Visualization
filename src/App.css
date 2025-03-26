@@ -9,3 +9,10 @@ body{
 .right{
   width: calc(90% - 40px);
 }
+
+
+@media  screen and (max-width: 768px){
+  .dashboard{
+    flex-direction: column;
+  }
+}

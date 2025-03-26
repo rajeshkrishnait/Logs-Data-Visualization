@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
-import { AppBar, Tabs, Tab, Box } from '@mui/material';
-import { styled } from '@mui/system';
+import React from 'react';
+import { Box, Grid, Paper, Typography } from '@mui/material';
 import {
   BarChart, Bar,
   LineChart, Line,
@@ -11,43 +10,8 @@ import {
 } from 'recharts';
 import { generateDummyData, LogEntry } from '../data/dummyData';
 
-const StyledTabs = styled(Tabs)({
-  backgroundColor: '#f5f5f5',
-  '& .MuiTabs-indicator': {
-    backgroundColor: '#1976d2',
-  },
-});
-
-const StyledTab = styled(Tab)({
-  textTransform: 'none',
-  fontWeight: 'bold',
-  '&.Mui-selected': {
-    color: '#1976d2',
-  },
-});
-
-const TabPanel = (props: { children?: React.ReactNode; index: number; value: number }) => {
-  const { children, value, index, ...other } = props;
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`tabpanel-${index}`}
-      aria-labelledby={`tab-${index}`}
-      {...other}
-    >
-      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
-    </div>
-  );
-};
-
-const TabbedChart: React.FC = () => {
-  const [value, setValue] = useState(0);
+const ChartsGrid: React.FC = () => {
   const data: LogEntry[] = generateDummyData();
-
-  const handleChange = (_: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
-  };
 
   const logLevelData = ['INFO', 'WARN', 'ERROR'].map(level => ({
     name: level,
@@ -77,87 +41,108 @@ const TabbedChart: React.FC = () => {
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
   return (
-    <Box sx={{ width: '100%' }}>
-      <AppBar position="static">
-        <StyledTabs value={value} onChange={handleChange} aria-label="chart tabs" variant="scrollable" scrollButtons="auto">
-          <StyledTab label="Bar Chart" />
-          <StyledTab label="Line Chart" />
-          <StyledTab label="Pie Chart" />
-          <StyledTab label="Area Chart" />
-          <StyledTab label="Scatter Chart" />
-          <StyledTab label="Radar Chart" />
-        </StyledTabs>
-      </AppBar>
-      <TabPanel value={value} index={0}>
-        <ResponsiveContainer width="100%" height={400}>
-          <BarChart data={logLevelData}>
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="count" fill="#8884d8" />
-          </BarChart>
-        </ResponsiveContainer>
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        <ResponsiveContainer width="100%" height={400}>
-          <LineChart data={responseTimeData}>
-            <XAxis dataKey="timestamp" hide />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Line type="monotone" dataKey="responseTime" stroke="#8884d8" />
-          </LineChart>
-        </ResponsiveContainer>
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        <ResponsiveContainer width="100%" height={400}>
-          <PieChart>
-            <Pie data={statusCodeData} cx="50%" cy="50%" outerRadius={150} fill="#8884d8" dataKey="count" label>
-              {statusCodeData.map((_, index) => (
-                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-              ))}
-            </Pie>
-            <Tooltip />
-            <Legend />
-          </PieChart>
-        </ResponsiveContainer>
-      </TabPanel>
-      <TabPanel value={value} index={3}>
-        <ResponsiveContainer width="100%" height={400}>
-          <AreaChart data={responseTimeData}>
-            <XAxis dataKey="timestamp" hide />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Area type="monotone" dataKey="responseTime" stroke="#8884d8" fill="#8884d8" />
-          </AreaChart>
-        </ResponsiveContainer>
-      </TabPanel>
-      <TabPanel value={value} index={4}>
-        <ResponsiveContainer width="100%" height={400}>
-          <ScatterChart>
-            <XAxis type="number" dataKey="x" name="Status Code" />
-            <YAxis type="number" dataKey="y" name="Response Time" />
-            <Tooltip cursor={{ strokeDasharray: '3 3' }} />
-            <Legend />
-            <Scatter name="Logs" data={scatterData} fill="#8884d8" />
-          </ScatterChart>
-        </ResponsiveContainer>
-      </TabPanel>
-      <TabPanel value={value} index={5}>
-        <ResponsiveContainer width="100%" height={400}>
-          <RadarChart cx="50%" cy="50%" outerRadius={150} data={serviceData}>
-            <PolarGrid />
-            <PolarAngleAxis dataKey="name" />
-            <PolarRadiusAxis />
-            <Radar name="Logs" dataKey="count" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
-            <Legend />
-          </RadarChart>
-        </ResponsiveContainer>
-      </TabPanel>
+    <Box sx={{ p: 3 }}>
+      <Grid container spacing={3}>
+        {/** Bar Chart */}
+        <Grid item xs={12} md={6} lg={4}>
+          <Paper sx={{ p: 2 }}>
+            <Typography variant="h6">Log Levels</Typography>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={logLevelData}>
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="count" fill="#8884d8" />
+              </BarChart>
+            </ResponsiveContainer>
+          </Paper>
+        </Grid>
+
+        {/** Line Chart */}
+        <Grid item xs={12} md={6} lg={4}>
+          <Paper sx={{ p: 2 }}>
+            <Typography variant="h6">Response Time Over Time</Typography>
+            <ResponsiveContainer width="100%" height={300}>
+              <LineChart data={responseTimeData}>
+                <XAxis dataKey="timestamp" hide />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Line type="monotone" dataKey="responseTime" stroke="#8884d8" />
+              </LineChart>
+            </ResponsiveContainer>
+          </Paper>
+        </Grid>
+
+        {/** Pie Chart */}
+        <Grid item xs={12} md={6} lg={4}>
+          <Paper sx={{ p: 2 }}>
+            <Typography variant="h6">Status Code Distribution</Typography>
+            <ResponsiveContainer width="100%" height={300}>
+              <PieChart>
+                <Pie data={statusCodeData} cx="50%" cy="50%" outerRadius={100} fill="#8884d8" dataKey="count" label>
+                  {statusCodeData.map((_, index) => (
+                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                  ))}
+                </Pie>
+                <Tooltip />
+                <Legend />
+              </PieChart>
+            </ResponsiveContainer>
+          </Paper>
+        </Grid>
+
+        {/** Area Chart */}
+        <Grid item xs={12} md={6} lg={4}>
+          <Paper sx={{ p: 2 }}>
+            <Typography variant="h6">Response Time Area</Typography>
+            <ResponsiveContainer width="100%" height={300}>
+              <AreaChart data={responseTimeData}>
+                <XAxis dataKey="timestamp" hide />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Area type="monotone" dataKey="responseTime" stroke="#8884d8" fill="#8884d8" />
+              </AreaChart>
+            </ResponsiveContainer>
+          </Paper>
+        </Grid>
+
+        {/** Scatter Chart */}
+        <Grid item xs={12} md={6} lg={4}>
+          <Paper sx={{ p: 2 }}>
+            <Typography variant="h6">Response Time vs Status Code</Typography>
+            <ResponsiveContainer width="100%" height={300}>
+              <ScatterChart>
+                <XAxis type="number" dataKey="x" name="Status Code" />
+                <YAxis type="number" dataKey="y" name="Response Time" />
+                <Tooltip cursor={{ strokeDasharray: '3 3' }} />
+                <Legend />
+                <Scatter name="Logs" data={scatterData} fill="#8884d8" />
+              </ScatterChart>
+            </ResponsiveContainer>
+          </Paper>
+        </Grid>
+
+        {/** Radar Chart */}
+        <Grid item xs={12} md={6} lg={4}>
+          <Paper sx={{ p: 2 }}>
+            <Typography variant="h6">Service Request Distribution</Typography>
+            <ResponsiveContainer width="100%" height={300}>
+              <RadarChart cx="50%" cy="50%" outerRadius={100} data={serviceData}>
+                <PolarGrid />
+                <PolarAngleAxis dataKey="name" />
+                <PolarRadiusAxis />
+                <Radar name="Logs" dataKey="count" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
+                <Legend />
+              </RadarChart>
+            </ResponsiveContainer>
+          </Paper>
+        </Grid>
+      </Grid>
     </Box>
   );
 };
 
-export default TabbedChart;
+export default ChartsGrid;
